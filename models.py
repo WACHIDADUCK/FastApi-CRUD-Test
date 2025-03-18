@@ -1,19 +1,52 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String 
+from sqlalchemy import Column, ForeignKey, Integer, String, Enum
 from database import Base
+from sqlalchemy.orm import relationship
 
-# Definir el modelo de usuario
-class User(Base):
+
+class UserType(Base):
+    __tablename__ = "user_types"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(50))
+
+# Definir el modelo de Users
+class Users(Base):
     __tablename__ = "users"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(50))
+    email = Column(String(50))
+    profile_pic = Column(String(50))
+    user_type_id = Column(Integer, ForeignKey("user_types.id"))
+    user_type = relationship("UserType")
+
+
+# class Subject(Base):
+#     __tablename__ = "subjects"
+
+#     id = Column(Integer, primary_key=True, index=True)
+#     name = Column(String(50), index=True)
+
+
+# class SubjectTeacher(Base):
+#     __tablename__ = "SubjectTeachers"
+
+#     id = Column(Integer, primary_key=True, index=True)
+#     name = Column(String(50), index=True)
+
+# Classrooms
+
+
+class Lessons(Base):
+    __tablename__ = "lessons"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String(50), unique=True, index=True)
+    title = Column(String(50))
+    start_time = Column(String(100))
+    end_time = Column(String(100))
+    subject = Column(String(100))
 
-# Definir el modelo de post
-class Post(Base):
-    __tablename__ = "posts"
-
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(50), index=True)
     content = Column(String(100))
-    # published = Column(Boolean, default=False)
     user_id = Column(Integer, ForeignKey("users.id"))
+
+
